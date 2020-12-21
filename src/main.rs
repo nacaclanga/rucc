@@ -35,8 +35,8 @@ fn main() {
 #[test]
 fn compare_with_clang_output() {
     use std::fs;
-    use std::process::Command;
     use std::io::{stderr, Write};
+    use std::process::Command;
 
     let examples_paths = match fs::read_dir("example") {
         Ok(paths) => paths,
@@ -68,8 +68,8 @@ fn compare_with_clang_output() {
 
 #[test]
 fn compile_all_examples() {
-    use std::fs;
     use rucc::{codegen, lexer, parser};
+    use std::fs;
     use std::io::{stderr, Write};
 
     let examples_paths = match fs::read_dir("example") {

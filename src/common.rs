@@ -1,6 +1,6 @@
+use crate::codegen;
 use crate::lexer;
 use crate::parser;
-use crate::codegen;
 use std::io::{stderr, Write};
 
 extern crate regex;
@@ -42,12 +42,14 @@ pub fn run_file<'a>(filename: &'a str) {
                         Colour::Red.bold().paint("error:"),
                         pos.line,
                         msg
-                    ).unwrap();
+                    )
+                    .unwrap();
                     writeln!(
                         &mut stderr(),
                         "{}",
                         parser.lexer.get_surrounding_code_with_err_point(pos.pos)
-                    ).unwrap();
+                    )
+                    .unwrap();
                     println!(
                         "{} error{} generated.",
                         parser.err_counts + 1,
