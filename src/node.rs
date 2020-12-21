@@ -1,8 +1,8 @@
 use std::boxed::Box;
-use types::{StorageClass, Type};
-use parser::{Error, ParseR};
+use crate::types::{StorageClass, Type};
+use crate::parser::{Error, ParseR};
 use std::marker::Send;
-use lexer::Pos;
+use crate::lexer::Pos;
 
 #[derive(Debug, Clone)]
 pub struct AST {
@@ -110,58 +110,58 @@ impl AST {
     fn eval(&self) -> ParseR<i64> {
         Ok(match self.kind {
             ASTKind::Int(n, _) => n,
-            ASTKind::TypeCast(ref e, _) => try!(e.eval()),
-            ASTKind::UnaryOp(ref e, CUnaryOps::LNot) => (try!(e.eval()) == 0) as i64,
-            ASTKind::UnaryOp(ref e, CUnaryOps::BNot) => !try!(e.eval()),
-            ASTKind::UnaryOp(ref e, CUnaryOps::Minus) => -try!(e.eval()),
-            ASTKind::UnaryOp(ref e, CUnaryOps::Inc) => try!(e.eval()) + 1,
-            ASTKind::UnaryOp(ref e, CUnaryOps::Dec) => try!(e.eval()) - 1,
-            ASTKind::UnaryOp(ref e, CUnaryOps::Deref) => try!(e.eval()),
-            ASTKind::UnaryOp(ref e, CUnaryOps::Addr) => try!(e.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Add) => try!(l.eval()) + try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Sub) => try!(l.eval()) - try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Mul) => try!(l.eval()) * try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Div) => try!(l.eval()) / try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Rem) => try!(l.eval()) % try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::And) => try!(l.eval()) & try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Or) => try!(l.eval()) | try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Xor) => try!(l.eval()) ^ try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::LAnd) => try!(l.eval()) & try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::LOr) => try!(l.eval()) | try!(r.eval()),
+            ASTKind::TypeCast(ref e, _) => r#try!(e.eval()),
+            ASTKind::UnaryOp(ref e, CUnaryOps::LNot) => (r#try!(e.eval()) == 0) as i64,
+            ASTKind::UnaryOp(ref e, CUnaryOps::BNot) => !r#try!(e.eval()),
+            ASTKind::UnaryOp(ref e, CUnaryOps::Minus) => -r#try!(e.eval()),
+            ASTKind::UnaryOp(ref e, CUnaryOps::Inc) => r#try!(e.eval()) + 1,
+            ASTKind::UnaryOp(ref e, CUnaryOps::Dec) => r#try!(e.eval()) - 1,
+            ASTKind::UnaryOp(ref e, CUnaryOps::Deref) => r#try!(e.eval()),
+            ASTKind::UnaryOp(ref e, CUnaryOps::Addr) => r#try!(e.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Add) => r#try!(l.eval()) + r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Sub) => r#try!(l.eval()) - r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Mul) => r#try!(l.eval()) * r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Div) => r#try!(l.eval()) / r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Rem) => r#try!(l.eval()) % r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::And) => r#try!(l.eval()) & r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Or) => r#try!(l.eval()) | r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Xor) => r#try!(l.eval()) ^ r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::LAnd) => r#try!(l.eval()) & r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::LOr) => r#try!(l.eval()) | r#try!(r.eval()),
             ASTKind::BinaryOp(ref l, ref r, CBinOps::Eq) => {
-                (try!(l.eval()) == try!(r.eval())) as i64
+                (r#try!(l.eval()) == r#try!(r.eval())) as i64
             }
             ASTKind::BinaryOp(ref l, ref r, CBinOps::Ne) => {
-                (try!(l.eval()) != try!(r.eval())) as i64
+                (r#try!(l.eval()) != r#try!(r.eval())) as i64
             }
             ASTKind::BinaryOp(ref l, ref r, CBinOps::Lt) => {
-                (try!(l.eval()) < try!(r.eval())) as i64
+                (r#try!(l.eval()) < r#try!(r.eval())) as i64
             }
             ASTKind::BinaryOp(ref l, ref r, CBinOps::Gt) => {
-                (try!(l.eval()) > try!(r.eval())) as i64
+                (r#try!(l.eval()) > r#try!(r.eval())) as i64
             }
             ASTKind::BinaryOp(ref l, ref r, CBinOps::Le) => {
-                (try!(l.eval()) <= try!(r.eval())) as i64
+                (r#try!(l.eval()) <= r#try!(r.eval())) as i64
             }
             ASTKind::BinaryOp(ref l, ref r, CBinOps::Ge) => {
-                (try!(l.eval()) >= try!(r.eval())) as i64
+                (r#try!(l.eval()) >= r#try!(r.eval())) as i64
             }
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Shl) => try!(l.eval()) << try!(r.eval()),
-            ASTKind::BinaryOp(ref l, ref r, CBinOps::Shr) => try!(l.eval()) >> try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Shl) => r#try!(l.eval()) << r#try!(r.eval()),
+            ASTKind::BinaryOp(ref l, ref r, CBinOps::Shr) => r#try!(l.eval()) >> r#try!(r.eval()),
             ASTKind::BinaryOp(ref l, ref r, CBinOps::Comma) => {
-                try!(l.eval());
-                try!(r.eval())
+                r#try!(l.eval());
+                r#try!(r.eval())
             }
             ASTKind::BinaryOp(ref l, ref r, _) => {
-                try!(l.eval());
-                try!(r.eval());
+                r#try!(l.eval());
+                r#try!(r.eval());
                 0
             }
             ASTKind::TernaryOp(ref cond, ref l, ref r) => {
-                if try!(cond.eval()) != 0 {
-                    try!(l.eval())
+                if r#try!(cond.eval()) != 0 {
+                    r#try!(l.eval())
                 } else {
-                    try!(r.eval())
+                    r#try!(r.eval())
                 }
             }
             _ => return Err(Error::Something),

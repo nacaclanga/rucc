@@ -1,6 +1,6 @@
-use lexer;
-use parser;
-use codegen;
+use crate::lexer;
+use crate::parser;
+use crate::codegen;
 use std::io::{stderr, Write};
 
 extern crate regex;
@@ -9,7 +9,7 @@ use self::regex::Regex;
 extern crate ansi_term;
 use self::ansi_term::Colour;
 
-use CODEGEN;
+use crate::CODEGEN;
 
 // parse -> codegen -> write llvm bitcode to output file
 pub fn run_file<'a>(filename: &'a str) {
